@@ -1,9 +1,9 @@
-import { DisplayText } from "./_components/DisplayText";
+import { HomeSection } from "./_components/Home/HomeSection";
 
 export default function Home() {
   return (
     <main>
-      <DisplayText className="text-9xl">&lt;10Manip&gt;</DisplayText>
+      <HomeSection />
     </main>
   );
 }
