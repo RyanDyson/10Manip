@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { DisplayText } from "./_components/DisplayText";
 
 export default function Home() {

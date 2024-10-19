@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
-import { Handjet } from "next/font/google";
 import { Lexend } from "next/font/google";
 import "./globals.css";
-
-const HandjetFont = Handjet({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 const LexendFont = Lexend({
   subsets: ["latin"],
