@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Lexend } from "next/font/google";
+import { Navigation } from "./_components/Navigation/Navigation";
 import "./globals.css";
 
 const LexendFont = Lexend({
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${LexendFont.className} antialiased`}>{children}</body>
+      <body className={`${LexendFont.className} antialiased`}>
+        <Navigation />
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,6 +1,6 @@
-import { Handjet } from "next/font/google";
+import { Big_Shoulders_Display } from "next/font/google";
 
-const HandjetFont = Handjet({
+const BigShoulders = Big_Shoulders_Display({
   subsets: ["latin"],
   weight: "400",
 });
@@ -11,7 +11,7 @@ interface DisplayTextProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function DisplayText(props: DisplayTextProps) {
   return (
-    <div {...props} className={`${HandjetFont.className} ${props.className}`}>
+    <div {...props} className={`${BigShoulders.className} ${props.className}`}>
       {props.children}
     </div>
   );

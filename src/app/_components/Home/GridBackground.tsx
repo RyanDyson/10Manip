@@ -2,34 +2,60 @@
 
 import useMeasure from "react-use-measure";
 import { useState } from "react";
+import coverImage from "@/../public/coverImage.jpg";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { easeInOut } from "framer-motion/dom";
 
-const Square = () => {
+type squareProps = {
+  XY: number[];
+  index: number;
+  cols: number;
+};
+
+const squareSize = 64;
+
+const Square = ({ XY, index, cols }: squareProps) => {
+  cols--;
+
+  const x = (index % cols) * squareSize;
+  const y = Math.floor(index / cols) * squareSize;
+  const distance = Math.sqrt((XY[0] - x) ** 2 + (XY[1] - y) ** 2);
+  const maxDistance = 500; // Adjust this value to control the size of the gradient
+  const opacity = 1 - Math.max(0, 1 - distance / maxDistance + 0.6);
+
   return (
-    <div className="w-32 h-32 opacity-0 hover:opacity-20 bg-gray-600 transition-all duration-100 hover:backdrop-blur-lg" />
+    <motion.div
+      className="relative w-16 h-16 bg-gray-900 transition-all duration-100 z-20 rounded-md border border-gray-600"
+      style={{ opacity }}
+      transition={{ ease: easeInOut, duration: 0.1 }}
+    />
   );
 };
 
 export function GridBackground() {
   const [ref, bounds] = useMeasure();
-  const squareSize = 128;
+  const squareSize = 64;
   const cols = Math.ceil(bounds.width / squareSize);
   const rows = Math.ceil(bounds.height / squareSize);
   const [XY, setXY] = useState([0, 0]);
-
   return (
-    <div className="w-screen h-screen relative">
-      <div
-        onMouseMove={({ clientX, clientY }) => setXY([clientX, clientY])}
-        className="absolute w-screen h-screen z-0 bg-gray-400 opacity-10"
-      ></div>
-      <div
-        ref={ref}
-        className={`grid grid-cols-${cols} gap-4 relative w-screen h-screen `}
-      >
-        {Array.from({ length: cols * rows }).map((_, i) => (
-          <Square key={i} />
-        ))}
-      </div>
-    </div>
+    <motion.div
+      ref={ref}
+      onMouseMove={({ clientX, clientY }) => setXY([clientX, clientY])}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ ease: easeInOut, duration: 0.5, delay: 0.1 }}
+      className="w-screen h-screen absolute z-10 overflow-hidden flex gap-[0.1px] flex-wrap justify-between"
+    >
+      <Image
+        src={coverImage}
+        alt={"indofest"}
+        className="absolute w-screen h-screen object-cover z-0"
+      />
+      {Array.from({ length: cols * rows }).map((_, i) => (
+        <Square key={i} XY={XY} index={i} cols={cols} />
+      ))}
+    </motion.div>
   );
 }
