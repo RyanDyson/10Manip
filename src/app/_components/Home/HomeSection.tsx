@@ -14,7 +14,7 @@ export function HomeSection(props: React.HTMLAttributes<HTMLDivElement>) {
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 0.5, delay: 0.5 }}
       >
-        <DisplayText className="text-[10vw] leading-none">
+        <DisplayText className="text-[10vw] leading-none [text-shadow:_0_0_50px_rgb(50_50_50_/_80%),_0_0_20px_rgb(50_50_50_/_60%),_0_0_30px_rgb(50_50_50_/_40%),_0_0_40px_rgb(50_50_50_/_20%)]">
           &lt;10MANIP&gt;
         </DisplayText>
       </motion.div>

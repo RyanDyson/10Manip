@@ -26,7 +26,7 @@ const Square = ({ XY, index, cols }: squareProps) => {
 
   return (
     <motion.div
-      className="relative w-16 h-16 bg-gray-900 transition-all duration-100 z-20 rounded-md border border-gray-600"
+      className="relative w-16 h-16 bg-neutral-800 transition-all duration-100 z-20 rounded-md border border-neutral-700"
       style={{ opacity }}
       transition={{ ease: easeInOut, duration: 0.1 }}
     />

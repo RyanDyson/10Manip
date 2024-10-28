@@ -1,11 +1,11 @@
 "use client";
 
-import { DisplayText } from "../DisplayText";
 import Link from "next/link";
-import { motion, AnimatePresence, circOut } from "framer-motion";
+import { motion, easeInOut } from "framer-motion";
 import { useState } from "react";
 import useMeasure from "react-use-measure";
-import { FaHome, FaArrowAltCircleUp } from "react-icons/fa";
+import { FaHome, FaArrowRight } from "react-icons/fa";
+import { NavItems } from "./NavItems";
 
 type NavButtonProps = {
   NavItem: {
@@ -21,7 +21,7 @@ const NavButton = (props: NavButtonProps) => {
   return (
     <Link
       href={href}
-      className="text-lg hover:text-gray-500 transition-colors duration-100"
+      className="transition-all duration-100 text-md hover:bg-neutral-200/80 hover:text-neutral-950 rounded-full bg-neutral-900/80 backdrop-blur-xl py-2 px-4 border border-neutral-700/80 h-min"
     >
       {text}
       {props.children}
@@ -29,63 +29,40 @@ const NavButton = (props: NavButtonProps) => {
   );
 };
 
-const NavItems = [
-  {
-    text: "Home",
-    href: "/",
-  },
-  {
-    text: "About Us",
-    href: "/about",
-  },
-  {
-    text: "Contact Us",
-    href: "/contact",
-  },
-];
-
 export function Navigation() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [ref, { height }] = useMeasure();
+  const [ref, { width }] = useMeasure();
 
   return (
     <>
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.div key={0}>
-            <motion.button
-              onClick={() => setIsOpen(!isOpen)}
-              className="fixed flex items-center justify-center z-50 top-6 right-6 p-4 bg-gray-950/80 hover:bg-gray-200/80 hover:text-gray-950 transition-all duration-200 rounded-full backdrop-blur-xl w-16 h-16 hover:w-20 hover:h-20 hover:top-4 hover:right-4 border border-gray-400"
-            >
-              <FaHome className="text-md" />
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <motion.nav
-        ref={ref}
-        initial={{ translateY: `-${height}` }}
-        animate={{
-          translateY: isOpen ? 0 : -height,
-        }}
-        transition={{ ease: circOut, duration: 0.3, delay: 0.1 }}
-        className="fixed z-40 left-0 flex flex-col gap-y-4 w-screen p-4 px-8 bg-gray-950/80 border-b border-gray-100 backdrop-blur-3xl "
-      >
-        <div className="flex justify-between w-full">
-          <DisplayText className="text-9xl"> NAVIGATION </DisplayText>
-          <div className="flex flex-col gap-y-2 items-end justify-center">
-            {NavItems.map((item, index) => (
-              <NavButton key={index} NavItem={item} />
-            ))}
-          </div>
-        </div>
+      <motion.div key={0}>
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="self-center flex items-center justify-center bg-gray-950/80 hover:bg-gray-200/80 hover:text-gray-950 transition-all duration-200 rounded-full backdrop-blur-xl w-10 h-10 hover:w-12 hover:h-12 border border-gray-400"
+          className="fixed flex items-center justify-center z-50 top-6 right-6 p-4 bg-neutral-950/80 hover:bg-neutral-200/80 hover:text-neutral-950 transition-all duration-200 rounded-full backdrop-blur-xl w-16 h-16 hover:w-20 hover:h-20 hover:top-4 hover:right-4 border border-neutral-700/80"
         >
-          <FaArrowAltCircleUp className="text-lg" />
+          {isOpen ? (
+            <FaArrowRight className="text-md" />
+          ) : (
+            <FaHome className="text-md" />
+          )}
         </motion.button>
-      </motion.nav>
+      </motion.div>
+
+      <motion.div className="fixed w-max top-6 right-8 overflow-hidden z-40">
+        <motion.nav
+          initial={{ translateX: `${width}` }}
+          animate={{
+            translateX: isOpen ? 0 : width,
+          }}
+          transition={{ ease: easeInOut, duration: 0.3, delay: 0.1 }}
+          ref={ref}
+          className="z-40 flex w-full gap-x-4 h-16 pe-20 justify-between items-center"
+        >
+          {NavItems.map((item, index) => (
+            <NavButton key={index} NavItem={item} />
+          ))}
+        </motion.nav>
+      </motion.div>
     </>
   );
 }
