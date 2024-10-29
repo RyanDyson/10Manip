@@ -1,11 +1,12 @@
 "use client";
 
 import useMeasure from "react-use-measure";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import coverImage from "@/../public/coverImage.jpg";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { easeInOut } from "framer-motion/dom";
+import debounce from "lodash/debounce";
 
 type squareProps = {
   XY: number[];
@@ -36,13 +37,26 @@ const Square = ({ XY, index, cols }: squareProps) => {
 export function GridBackground() {
   const [ref, bounds] = useMeasure();
   const squareSize = 64;
-  const cols = Math.ceil(bounds.width / squareSize);
-  const rows = Math.ceil(bounds.height / squareSize);
+  const cols = useMemo(
+    () => Math.ceil(bounds.width / squareSize),
+    [bounds.width]
+  );
+  const rows = useMemo(
+    () => Math.ceil(bounds.height / squareSize),
+    [bounds.height]
+  );
   const [XY, setXY] = useState([0, 0]);
+
+  const handleMouseMove = useCallback(
+    debounce(({ clientX, clientY }) => {
+      setXY([clientX, clientY]);
+    }, 10),
+    []
+  );
   return (
     <motion.div
       ref={ref}
-      onMouseMove={({ clientX, clientY }) => setXY([clientX, clientY])}
+      onMouseMove={handleMouseMove}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ ease: easeInOut, duration: 0.5, delay: 0.1 }}
